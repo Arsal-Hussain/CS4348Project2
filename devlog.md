@@ -17,3 +17,11 @@ Key components, there will be 3 tellers and 50 customers. Bank will be open when
 # April 8 11:10pm
 
 Teller will need to inform when they are ready to serve, should use queue to determine when the next customer is served. Threading semaphore will determine availability of tellers.
+
+# April 8 11:24pm
+
+Starting the Teller class. Each teller will have a unique id to identify themselves in the queue and semaphores for each customer interaction. This includes their individual availability and the transaction that will occur (withdrawal or deposit). If they enter the safe, this will need to be indicated. Using sleep to simulate the transaction time. Once the transaction is complete it will communicate to the current position of the Customer, and wait for their depature before opening availability.
+
+# April 9 12:04am
+
+Finished Teller class. Using queue to signal readiness. Waits for customer to meet teller using the Semaphore. Uses different transaction instances to define semaphore, such as withdrawal or meeting with the manager. Uses logging to track each action completed at bank.
