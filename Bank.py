@@ -10,12 +10,13 @@ bank_door = threading.Semaphore(2) # max two customers in bank door
 bank_safe = threading.Semaphore(2) # max two tellers at the safe
 manager = threading.Semaphore(1) # max 1 teller with manager
 teller_ready = threading.Semaphore(0) # determines if teller is ready for next customer
+lock = threading.Lock()
 
 teller_queue = Queue()
 customer_queue = Queue()
 
 numCustomerServed = 0
-numCustomerServed_lock = threading.lock()
+numCustomerServed_lock = threading.Lock()
 
 class Teller(threading.Thread):
     def __init__(self, tid):
@@ -25,7 +26,7 @@ class Teller(threading.Thread):
         self.customer = None
         self.transaction = None
     def run(self):
-        global customer_served
+        global numCustomerServed
         while True:
                 print(f"Teller {self.id} [Teller {self.id}]: Ready for Customer")
                 teller_queue.put(self)
@@ -34,7 +35,7 @@ class Teller(threading.Thread):
                 self.customerAvailability.acquire() # customer will go to teller
 
                 if self.customer is None:
-                        break
+                    break
                 print(f"Teller {self.id} [Customer {self.customer.id}]: What is the transaction?")
                 self.transaction = self.customer.getTransaction()
 
@@ -57,7 +58,53 @@ class Teller(threading.Thread):
 
                 self.customer.leave.acquire()
 
-                with customerServed_lock:
+                with numCustomerServed_lock:
                       numCustomerServed += 1
-                      if numCustomerServed >= numCustomerServed:
+                      if numCustomerServed >= customers:
                             break
+
+class Customer(threading.Thread):
+    def __init__(self, cid):
+        super().__init__()
+        self.id = cid
+        self.transaction = random.choice(["Deposit", "Withdraw"])
+        self.complete = threading.Semaphore(0)
+        self.leave = threading.Semaphore(0)
+
+    def getTransaction(self):
+        print(f"Customer {self.id} [Teller {self.teller.id}]: gives transaction")
+        return self.transaction
+    
+    def run(self):
+        time.sleep(random.uniform(0, 0.1))
+        bank_door.acquire()
+        print(f"Customer {self.id} [Customer {self.id}]: enters bank")
+
+        teller_ready.acquire()
+        teller = teller_queue.get()
+        self.teller = teller
+        teller.customer = self
+        print(f"Customer {self.id} [Teller {teller.id}]: selects teller")
+        teller.customerAvailability.release()
+
+        self.complete.acquire()
+        print(f"Customer {self.id} [Teller {teller.id}]: leaving bank")
+        self.leave.release()
+        bank_door.release()
+
+tellers_thread = [Teller(i) for i in range(tellers)]
+customers_thread = [Customer(i) for i in range(customers)]
+
+for t in tellers_thread:
+    t.start()
+for c in customers_thread:
+    c.start()
+for c in customers_thread:
+    c.join()
+
+for t in tellers_thread:
+    t.customer = None
+    t.customerAvailability.release()
+
+for t in tellers_thread:
+    t.join()

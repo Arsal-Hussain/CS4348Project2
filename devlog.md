@@ -29,3 +29,7 @@ Finished Teller class. Using queue to signal readiness. Waits for customer to me
 # April 12 4:48pm
 
 Working on new session. Most likely to do customer class. Each customer will be assigned a unique ID, random transaction type (either deposit or withdraw), and semaphores for when transaction is complete and when customer leaves.
+
+# April 12 5:41pm
+
+Completed Customer class. Had to tweak some errors involving the test cases, the terminal was not killing due to an if-statement error.
