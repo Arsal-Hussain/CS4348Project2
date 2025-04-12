@@ -25,3 +25,7 @@ Starting the Teller class. Each teller will have a unique id to identify themsel
 # April 9 12:04am
 
 Finished Teller class. Using queue to signal readiness. Waits for customer to meet teller using the Semaphore. Uses different transaction instances to define semaphore, such as withdrawal or meeting with the manager. Uses logging to track each action completed at bank.
+
+# April 12 4:48pm
+
+Working on new session. Most likely to do customer class. Each customer will be assigned a unique ID, random transaction type (either deposit or withdraw), and semaphores for when transaction is complete and when customer leaves.
