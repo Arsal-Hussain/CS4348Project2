@@ -33,3 +33,7 @@ Working on new session. Most likely to do customer class. Each customer will be 
 # April 12 5:41pm
 
 Completed Customer class. Had to tweak some errors involving the test cases, the terminal was not killing due to an if-statement error.
+
+# April 12 5:48pm
+
+Full simulation complete. Final test with 50 customers and 3 tellers ran successfully. All semaphores worked as expected (doors, manager, safe). Final output matched specified format with both customers and tellers.
