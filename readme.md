@@ -9,8 +9,6 @@ The simulation enforces synchronization constraints and prints each thread’s a
 
 ## **Files and Their Roles**
 - **`Bank.py`** - The main simulation script containing all teller and customer thread logic.
-- **`README.md`** - Documentation for the project.
-- **(Optional) `devlog.md`** - Development log tracking progress and debugging (if submitted).
 
 ---
 
